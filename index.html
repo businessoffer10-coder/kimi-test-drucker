@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>A6 Druck auf A4</title>
+
+<style>
+:root{
+    --primary:#2563eb;
+    --primary-hover:#1d4ed8;
+    --bg:#eef2f7;
+    --card:#ffffff;
+    --border:#d1d9e6;
+    --text:#1e293b;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body{
+    overflow-x: hidden;
+}
+
+body{
+    background:var(--bg);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px 20px;
+}
+
+.container{
+    width:100%;
+    max-width:720px;
+    background:var(--card);
+    border-radius:24px;
+    padding:35px;
+    box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:var(--text);
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#64748b;
+    font-size:15px;
+}
+
+.paper-preview{
+    background:#f8fafc;
+    border:2px dashed var(--border);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:22px;
+    text-align:center;
+}
+
+.paper-preview .label{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:12px;
+    font-weight:600;
+}
+
+.preview-box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.a4-badge{
+    font-size:12px;
+    color:#64748b;
+    writing-mode:vertical-rl;
+    letter-spacing:2px;
+    font-weight:600;
+}
+
+.arrow{
+    font-size:22px;
+    color:#94a3b8;
+    line-height:1;
+}
+
+.a6-box{
+    width:150px;
+    height:212px;
+    background:white;
+    border:2px solid #94a3b8;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#cbd5e1;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+    flex-shrink:0;
+}
+
+.preview-caption{
+    margin-top:10px;
+    font-size:12px;
+    color:#64748b;
+}
+
+.toolbar{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+}
+
+.toolbar button{
+    padding:8px 16px;
+    border-radius:10px;
+    font-size:13px;
+    border:1px solid var(--border);
+    background:white;
+    color:#475569;
+    cursor:pointer;
+    transition:all .2s;
+    font-weight:600;
+    white-space:nowrap;
+    touch-action: manipulation;
+}
+
+.toolbar button:hover{
+    background:#f1f5f9;
+    border-color:var(--primary);
+    color:var(--primary);
+}
+
+.toolbar button.active{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+
+.textarea-wrapper{
+    position:relative;
+    margin-bottom:18px;
+}
+
+textarea{
+    width:100%;
+    height:340px;
+    border:2px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    font-size:16px;
+    resize:vertical;
+    outline:none;
+    line-height:1.7;
+    direction:ltr;
+    background:#fafbfc;
+    color:var(--text);
+    transition:border-color .3s, background .3s;
+}
+
+textarea:focus{
+    border-color:var(--primary);
+    background:white;
+}
+
+.char-count{
+    text-align:right;
+    margin-top:6px;
+    font-size:12px;
+    color:#94a3b8;
+}
+
+.actions{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    margin-top:22px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    cursor:pointer;
+    padding:14px 30px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:700;
+    transition:all .3s;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    touch-action: manipulation;
+}
+
+.print-btn{
+    background:var(--primary);
+    color:white;
+    box-shadow:0 4px 14px rgba(37,99,235,.3);
+}
+
+.print-btn:hover{
+    background:var(--primary-hover);
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(37,99,235,.4);
+}
+
+.reset-btn{
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.reset-btn:hover{
+    background:#e2e8f0;
+}
+
+.info-box{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:12px;
+    padding:16px;
+    margin-top:22px;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+}
+
+.info-box .icon{
+    font-size:20px;
+    flex-shrink:0;
+    line-height:1;
+}
+
+.info-box .content{
+    font-size:14px;
+    color:#1e40af;
+    line-height:1.7;
+}
+
+.info-box .content strong{
+    display:block;
+    margin-bottom:4px;
+    color:#1e3a8a;
+}
+
+/* ===== Tablet ===== */
+@media (max-width: 768px){
+    .container{
+        max-width: 95%;
+        padding: 28px;
+    }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 480px){
+    body{
+        padding: 12px 8px;
+    }
+    .container{
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
+    .header h1{
+        font-size: 20px;
+    }
+    .header p{
+        font-size: 13px;
+    }
+    .a6-box{
+        width: 110px;
+        height: 156px;
+        font-size: 18px;
+    }
+    .arrow{
+        font-size: 18px;
+    }
+    .a4-badge{
+        font-size: 11px;
+    }
+    .toolbar button{
+        padding: 7px 12px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+    textarea{
+        height: 260px;
+        padding: 14px;
+        font-size: 16px; /* iOS zoom prevention */
+        border-radius: 12px;
+    }
+    .btn{
+        padding: 12px 20px;
+        font-size: 15px;
+        flex: 1;
+        justify-content: center;
+        min-width: 0;
+    }
+    .actions{
+        gap: 8px;
+    }
+    .info-box{
+        padding: 12px;
+        font-size: 13px;
+    }
+    .info-box .content{
+        font-size: 13px;
+        line-height: 1.6;
+    }
+}
+
+/* ===== Druck ===== */
+@page{
+    size:A4 portrait;
+    margin:0;
+}
+
+@media print{
+    *{
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    html, body{
+        overflow: visible;
+        background:white;
+        padding:0;
+        margin:0;
+    }
+
+    .container{
+        box-shadow:none;
+        border:none;
+        padding:0;
+        width:100%;
+        max-width:none;
+        background:white;
+        border-radius:0;
+    }
+
+    .header,
+    .paper-preview,
+    .toolbar,
+    .actions,
+    .info-box,
+    .char-count{
+        display:none !important;
+    }
+
+    .textarea-wrapper{
+        margin:0;
+        padding:0;
+        position: static;
+    }
+
+    textarea{
+        border:none;
+        outline:none;
+        resize:none;
+        padding:0;
+        margin:0;
+        background:transparent;
+        overflow:hidden;
+        
+        /* A6 Maße exakt */
+        width:105mm;
+        height:148mm;
+        
+        /* Zentrierung auf A4 */
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        
+        /* Text */
+        font-size:12pt;
+        line-height:1.6;
+        text-align:left;
+        direction:ltr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🖨️ Text auf A6 drucken</h1>
+        <p>Text eingeben und in der Mitte von A4 im A6-Format drucken</p>
+    </div>
+
+    <div class="paper-preview">
+        <div class="label">Vorschau der Papierposition</div>
+        <div class="preview-box">
+            <div class="a4-badge">A4</div>
+            <div class="arrow">→</div>
+            <div class="a6-box">A6</div>
+        </div>
+        <div class="preview-caption">Legen Sie normales A4-Papier in die Schublade</div>
+    </div>
+
+    <div class="toolbar">
+        <button onclick="setAlign('left')" class="active" id="btn-left">⬅️ Links</button>
+        <button onclick="setAlign('center')" id="btn-center">⏺️ Zentriert</button>
+        <button onclick="setAlign('right')" id="btn-right">➡️ Rechts</button>
+        <button onclick="setFontSize('12pt')" id="btn-s12">Klein</button>
+        <button onclick="setFontSize('14pt')" id="btn-s14" class="active">Mittel</button>
+        <button onclick="setFontSize('18pt')" id="btn-s18">Groß</button>
+        <button onclick="setFontSize('22pt')" id="btn-s22">Breit</button>
+    </div>
+
+    <div class="textarea-wrapper">
+        <textarea id="text" placeholder="Text hier eingeben oder einfügen..."></textarea>
+        <div class="char-count" id="charCount">0 Zeichen</div>
+    </div>
+
+    <div class="actions">
+        <button class="btn print-btn" onclick="printPage()">
+            <span>🖨️</span> Direktdruck
+        </button>
+        <button class="btn reset-btn" onclick="newPage()">
+            <span>🔄</span> Text löschen
+        </button>
+    </div>
+
+    <div class="info-box">
+        <div class="icon">💡</div>
+        <div class="content">
+            <strong>Druckanweisungen:</strong>
+            1. Stellen Sie sicher, dass normales A4-Papier im Druckerfach liegt.<br>
+            2. Stellen Sie die Druckereinstellungen auf "A4" und nicht "A6".<<br>
+            3. Der Text wird in der Mitte des Blattes im A6-Format gedruckt.<br>
+            4. Sie können das Papier nach dem Drucken auf A6-Größe zuschneiden.
+        </div>
+    </div>
+
+</div>
+
+<script>
+const textarea = document.getElementById("text");
+const charCount = document.getElementById("charCount");
+
+function setAlign(align){
+    textarea.style.textAlign = align;
+    document.querySelectorAll('.toolbar button[id^="btn-"]').forEach(b => {
+        if(b.id.includes('left') || b.id.includes('center') || b.id.includes('right')){
+            b.classList.remove('active');
+        }
+    });
+    document.getElementById('btn-' + (align === 'left' ? 'left' : align === 'center' ? 'center' : 'right')).classList.add('active');
+}
+
+function setFontSize(size){
+    textarea.style.fontSize = size;
+    document.querySelectorAll('.toolbar button[id^="btn-s"]').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-s' + size.replace('pt','')).classList.add('active');
+}
+
+function updateCount(){
+    charCount.textContent = textarea.value.length + " Zeichen";
+}
+
+function printPage(){
+    if(textarea.value.trim() === ""){
+        alert("Bitte geben Sie Text ein, bevor Sie drucken.");
+        return;
+    }
+    window.print();
+}
+
+function newPage(){
+    if(confirm("Möchten Sie den Text löschen und neu beginnen?")){
+        textarea.value = "";
+        textarea.focus();
+        updateCount();
+    }
+}
+
+textarea.addEventListener('input', updateCount);
+
+textarea.addEventListener('input', () => {
+    localStorage.setItem('a6_print_text', textarea.value);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('a6_print_text');
+    if(saved){
+        textarea.value = saved;
+        updateCount();
+    }
+});
+</script>
+
+</body>
+</html>
