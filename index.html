@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>A6 Direktdruck</title>
-
+<title>A6 Druck</title>
 <style>
 :root{
     --primary:#0f172a;
@@ -14,112 +13,53 @@
     --border:#e2e8f0;
     --text:#1e293b;
 }
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
-
-html, body{
-    overflow-x: hidden;
+html,body{
+    overflow-x:hidden;
     background:var(--bg);
 }
-
 body{
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:flex-start;
-    padding:30px 15px;
+    padding:20px 12px;
 }
-
-/* ===== المعاينة على الشاشة ===== */
 .container{
     width:100%;
     max-width:520px;
     background:var(--card);
-    border-radius:20px;
-    padding:28px;
+    border-radius:18px;
+    padding:22px;
     box-shadow:0 10px 40px rgba(0,0,0,.06);
 }
-
-.header{
+h1{
     text-align:center;
-    margin-bottom:24px;
-}
-
-.header h1{
     color:var(--primary);
-    font-size:22px;
+    font-size:20px;
     font-weight:800;
-    margin-bottom:6px;
+    margin-bottom:18px;
     letter-spacing:-0.5px;
 }
-
-.header p{
-    color:#64748b;
-    font-size:13px;
-}
-
-/* معاينة A6 واقعية */
-.preview-area{
-    display:flex;
-    justify-content:center;
-    margin-bottom:22px;
-}
-
-.a6-sheet{
-    width:280px;
-    height:397px; /* نسبة A6 1:1.414 */
-    background:white;
-    border:1px solid #cbd5e1;
-    border-radius:6px;
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
-    position:relative;
-    overflow:hidden;
-    flex-shrink:0;
-}
-
-.a6-sheet::before{
-    content:"A6";
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:48px;
-    font-weight:900;
-    color:#f1f5f9;
-    z-index:0;
-}
-
-.sheet-content{
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    padding:12px;
-    font-size:9px;
-    line-height:1.5;
-    color:var(--text);
-    overflow:hidden;
-    word-wrap:break-word;
-    z-index:1;
-    white-space:pre-wrap;
-}
-
-/* الأدوات */
 .toolbar{
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     gap:8px;
-    margin-bottom:16px;
+    margin-bottom:12px;
 }
-
-.toolbar button{
+.font-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:8px;
+    margin-bottom:14px;
+}
+button{
     padding:10px;
     border-radius:10px;
     font-size:13px;
@@ -130,35 +70,20 @@ body{
     transition:all .2s;
     font-weight:600;
     text-align:center;
+    touch-action:manipulation;
 }
-
-.toolbar button:hover{
+button:hover{
     border-color:var(--accent);
     color:var(--accent);
 }
-
-.toolbar button.active{
+button.active{
     background:var(--primary);
     color:white;
     border-color:var(--primary);
 }
-
-.font-row{
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap:8px;
-    margin-bottom:16px;
-}
-
-/* textarea */
-.textarea-wrapper{
-    position:relative;
-    margin-bottom:16px;
-}
-
 textarea{
     width:100%;
-    height:220px;
+    height:260px;
     border:2px solid var(--border);
     border-radius:14px;
     padding:16px;
@@ -171,12 +96,10 @@ textarea{
     color:var(--text);
     transition:border-color .3s;
 }
-
 textarea:focus{
     border-color:var(--accent);
     background:white;
 }
-
 .meta{
     display:flex;
     justify-content:space-between;
@@ -184,18 +107,15 @@ textarea:focus{
     font-size:12px;
     color:#94a3b8;
     margin-top:6px;
+    padding:0 4px;
 }
-
 .actions{
     display:grid;
     grid-template-columns: 2fr 1fr;
     gap:10px;
-    margin-top:20px;
+    margin-top:18px;
 }
-
 .btn{
-    border:none;
-    cursor:pointer;
     padding:14px;
     border-radius:12px;
     font-size:15px;
@@ -205,204 +125,99 @@ textarea:focus{
     align-items:center;
     justify-content:center;
     gap:8px;
-    touch-action: manipulation;
+    border:none;
+    cursor:pointer;
 }
-
 .print-btn{
     background:var(--primary);
     color:white;
     box-shadow:0 4px 14px rgba(15,23,42,.2);
 }
-
 .print-btn:hover{
     background:#1e293b;
     transform:translateY(-1px);
 }
-
 .reset-btn{
     background:#f1f5f9;
     color:#475569;
 }
-
 .reset-btn:hover{
     background:#e2e8f0;
 }
-
-/* ===== Tablet ===== */
-@media (max-width: 640px){
-    .a6-sheet{
-        width:240px;
-        height:340px;
-    }
-    .actions{
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ===== Mobile ===== */
 @media (max-width: 400px){
-    body{
-        padding: 12px 8px;
-    }
-    .container{
-        padding: 18px 14px;
-        border-radius: 16px;
-    }
-    .header h1{
-        font-size: 18px;
-    }
-    .a6-sheet{
-        width:200px;
-        height:283px;
-    }
-    textarea{
-        height: 180px;
-        font-size: 16px;
-    }
-    .toolbar, .font-row{
-        grid-template-columns: repeat(2, 1fr);
-    }
+    body{padding:12px 8px;}
+    .container{padding:16px 12px;border-radius:14px;}
+    h1{font-size:18px;margin-bottom:14px;}
+    textarea{height:200px;font-size:16px;}
+    .actions{grid-template-columns:1fr;}
+    .toolbar,.font-row{grid-template-columns:repeat(2,1fr);}
 }
-
-/* ===== DRUCK - A6 ECHTES PAPIER ===== */
 @page{
-    size: 105mm 148mm portrait;
-    margin: 0;
+    size:105mm 148mm portrait;
+    margin:0;
 }
-
 @media print{
-    *{
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
-
-    html, body{
-        margin:0;
-        padding:0;
-        background:white;
-        width:105mm;
-        height:148mm;
-        overflow:hidden;
-    }
-
-    .container{
-        box-shadow:none;
-        border:none;
-        padding:0;
-        margin:0;
-        width:105mm;
-        height:148mm;
-        max-width:none;
-        background:white;
-        border-radius:0;
-    }
-
-    .header,
-    .preview-area,
-    .toolbar,
-    .font-row,
-    .actions,
-    .meta{
-        display:none !important;
-    }
-
-    .textarea-wrapper{
-        margin:0;
-        padding:0;
-        width:105mm;
-        height:148mm;
-    }
-
-    textarea{
-        width:105mm;
-        height:148mm;
-        border:none;
-        outline:none;
-        resize:none;
-        padding:8mm;
-        margin:0;
-        background:transparent;
-        overflow:hidden;
-        font-size:12pt;
-        line-height:1.5;
-        text-align:left;
-        direction:ltr;
-        border-radius:0;
-        box-shadow:none;
-    }
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+    html,body{margin:0;padding:0;background:white;width:105mm;height:148mm;overflow:hidden;}
+    .container{box-shadow:none;border:none;padding:0;margin:0;width:105mm;height:148mm;max-width:none;background:white;border-radius:0;}
+    h1,.toolbar,.font-row,.actions,.meta{display:none!important;}
+    .textarea-wrapper{margin:0;padding:0;width:105mm;height:148mm;}
+    textarea{width:105mm;height:148mm;border:none;outline:none;resize:none;padding:8mm;margin:0;background:transparent;overflow:hidden;font-size:12pt;line-height:1.5;text-align:left;direction:ltr;border-radius:0;box-shadow:none;}
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
-
-    <div class="header">
-        <h1>🖨️ A6 Direktdruck</h1>
-        <p>Legen Sie A6-Papier ein und drucken Sie direkt</p>
-    </div>
-
-    <div class="preview-area">
-        <div class="a6-sheet" id="previewSheet">
-            <div class="sheet-content" id="previewText"></div>
-        </div>
-    </div>
-
+    <h1>🖨️ A6 Druck</h1>
+    
     <div class="toolbar">
         <button onclick="setAlign('left')" class="active" id="btn-left">Links</button>
         <button onclick="setAlign('center')" id="btn-center">Zentriert</button>
         <button onclick="setAlign('right')" id="btn-right">Rechts</button>
     </div>
-
+    
     <div class="font-row">
         <button onclick="setFontSize('10pt')" id="btn-s10">10pt</button>
         <button onclick="setFontSize('12pt')" id="btn-s12" class="active">12pt</button>
         <button onclick="setFontSize('14pt')" id="btn-s14">14pt</button>
         <button onclick="setFontSize('16pt')" id="btn-s16">16pt</button>
     </div>
-
+    
     <div class="textarea-wrapper">
-        <textarea id="text" placeholder="Text hier eingeben..."></textarea>
+        <textarea id="text" placeholder="Text hier eingeben oder einfügen..."></textarea>
         <div class="meta">
-            <span id="pageInfo">A6 Portrait · 105×148mm</span>
+            <span>A6 · 105×148mm</span>
             <span id="charCount">0 Zeichen</span>
         </div>
     </div>
-
+    
     <div class="actions">
         <button class="btn print-btn" onclick="printPage()">
-            <span>🖨️</span> Jetzt drucken
+            <span>🖨️</span> Drucken
         </button>
         <button class="btn reset-btn" onclick="newPage()">
             <span>🗑️</span> Löschen
         </button>
     </div>
-
 </div>
 
 <script>
 const textarea = document.getElementById("text");
-const previewText = document.getElementById("previewText");
 const charCount = document.getElementById("charCount");
 
-function updatePreview(){
-    previewText.textContent = textarea.value;
-    previewText.style.textAlign = textarea.style.textAlign || 'left';
-    previewText.style.fontSize = (textarea.style.fontSize || '12pt').replace('pt','px');
+function updateCount(){
     charCount.textContent = textarea.value.length + " Zeichen";
 }
 
 function setAlign(align){
     textarea.style.textAlign = align;
-    previewText.style.textAlign = align;
     document.querySelectorAll('.toolbar button').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-' + align).classList.add('active');
 }
 
 function setFontSize(size){
     textarea.style.fontSize = size;
-    updatePreview();
     document.querySelectorAll('.font-row button').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-s' + size.replace('pt','')).classList.add('active');
 }
@@ -418,24 +233,12 @@ function printPage(){
 function newPage(){
     if(confirm("Text wirklich löschen?")){
         textarea.value = "";
-        updatePreview();
+        updateCount();
         textarea.focus();
     }
 }
 
-textarea.addEventListener('input', updatePreview);
-
-textarea.addEventListener('input', () => {
-    localStorage.setItem('a6_real_text', textarea.value);
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('a6_real_text');
-    if(saved){
-        textarea.value = saved;
-        updatePreview();
-    }
-});
+textarea.addEventListener('input', updateCount);
 </script>
 
 </body>
